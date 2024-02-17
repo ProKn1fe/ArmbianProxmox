@@ -27,7 +27,7 @@ jobs:
           git clone --depth=1 --branch=main https://github.com/armbian/build
       - name: Build variants
         run: |
-          MAIN_PARAMS="NO_APT_CACHER=no KERNEL_CONFIGURE=no BUILD_MINIMAL=yes BOARD=${{ matrix.board }} ENABLE_EXTENSIONS=install-proxmox-port"
+          MAIN_PARAMS="NO_APT_CACHER=no KERNEL_CONFIGURE=no BUILD_MINIMAL=yes COMPRESS_OUTPUTIMAGE=xz BOARD=${{ matrix.board }} ENABLE_EXTENSIONS=install-proxmox-port"
           cp -R userpatches/ build/
           cd build
           ./compile.sh $MAIN_PARAMS BRANCH=${{ matrix.branch }} RELEASE=${{ matrix.system }}
@@ -38,4 +38,4 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: "build/output/images/**"
-          tag_name: orangepi3b-server-${{ steps.date.outputs.date }}
+          tag_name: ${{ matrix.board }}-proxmox-${{ steps.date.outputs.date }}
